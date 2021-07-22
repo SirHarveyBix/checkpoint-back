@@ -7,7 +7,7 @@ const app = require('./app');
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
-console.log(process.env.PORT);
+
 app.use(cors());
 
 app.listen(port, (err) => {

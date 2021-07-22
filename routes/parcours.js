@@ -25,16 +25,42 @@ router.post('/', (request, response) => {
   );
 });
 
-// router.get('/', function (request, response) {
-//   pool.query('SELECT * FROM documentation', (error, results) => {
-//     if (error) {
-//       response.status(500).send(error);
-//     } else {
-//       response.send(results);
-//     }
-//   });
-// });
+router.get('/', function (request, response) {
+  pool.query('SELECT * FROM parcours', (error, results) => {
+    if (error) {
+      response.status(500).send(error);
+    } else {
+      response.send(results);
+    }
+  });
+});
 
+router.put('/', (request, response) => {
+  const { putParcours } = request.body;
+  const parcoursId = putParcours.id;
+  const parcoursParts = putParcours.date.split('/');
+  putParcours.date = new Date(
+    parseInt(parcoursParts[2], 10),
+    parseInt(parcoursParts[1], 10) - 1,
+    parseInt(parcoursParts[0], 10)
+  );
+  console.log(putParcours);
+  pool.query(
+    'UPDATE parcours SET ? WHERE id = ?',
+    [putParcours, parcoursId],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        response.status(500).send(error);
+      } else if (results.affectedRows > 0) {
+        console.log(results);
+        response.status(200).send(results);
+      } else {
+        response.sendStatus(404);
+      }
+    }
+  );
+});
 // trouver avec id
 // router.get('/:id', function (request, response) {
 //   const { id } = request.params;
