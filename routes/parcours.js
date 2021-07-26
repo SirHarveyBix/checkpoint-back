@@ -6,14 +6,12 @@ const pool = require('../config/mysql');
 
 router.post('/', (request, response) => {
   const { parcours } = request.body;
-  console.log(parcours);
   const user_id = 1;
   pool.query(
     `INSERT INTO parcours(title, description, date, user_id) VALUES (?, ?, ?, ?)`,
     [parcours.title, parcours.description, parcours.date, user_id],
     (error, results) => {
       if (error) {
-        console.log(error);
         response.status(500).send(error);
       } else {
         response.status(201).send({
@@ -42,10 +40,8 @@ router.put('/', (request, response) => {
     [putParcours, putParcours.id],
     (error, results) => {
       if (error) {
-        console.log(error);
         response.status(500).send(error);
       } else if (results.affectedRows > 0) {
-        console.log(results);
         response.status(200).send(results);
       } else {
         response.sendStatus(404);
@@ -56,7 +52,6 @@ router.put('/', (request, response) => {
 
 router.delete('/:id', (request, response) => {
   const { id } = request.params;
-  console.log(id);
   pool.query('DELETE FROM parcours WHERE id = ?', [id], (error, results) => {
     if (error) {
       response.status(500).send(error);

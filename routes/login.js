@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const pool = require('../config/mysql');
 
 router.post('/', (request, response) => {
-  console.log(request.body);
   const { user } = request.body;
   if (!user.pseudo || !user.password) {
     response
@@ -29,14 +28,10 @@ router.post('/', (request, response) => {
                 const userFound = {
                   id: results[0].id,
                 };
-                console.log(responseCrypted);
                 response.status(200).send({ userFound });
               } else if (error) {
-                console.log(error);
                 response.send(error);
               } else {
-                console.log(error);
-
                 response.status(403).send('Votre mot de passe est eronné');
               }
             }

@@ -9,7 +9,6 @@ router.post('/', (request, response) => {
 
   bcrypt.hash(user.password, 10, (error, hash) => {
     if (error) {
-      console.log(error);
       response.status(500).send(error);
     } else {
       pool.query(
@@ -18,10 +17,8 @@ router.post('/', (request, response) => {
         (err, results) => {
           if (err) {
             response.status(500).send(err);
-            console.log(err);
           } else {
             response.status(201).send({ id: results.insertId });
-            console.log(results);
           }
         }
       );
