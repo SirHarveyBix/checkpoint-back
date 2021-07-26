@@ -25,7 +25,7 @@ router.post('/', (request, response) => {
   );
 });
 
-router.get('/', function (request, response) {
+router.get('/', (request, response) => {
   pool.query('SELECT * FROM parcours', (error, results) => {
     if (error) {
       response.status(500).send(error);
@@ -37,17 +37,9 @@ router.get('/', function (request, response) {
 
 router.put('/', (request, response) => {
   const { putParcours } = request.body;
-  const parcoursId = putParcours.id;
-  const parcoursParts = putParcours.date.split('/');
-  putParcours.date = new Date(
-    parseInt(parcoursParts[2], 10),
-    parseInt(parcoursParts[1], 10) - 1,
-    parseInt(parcoursParts[0], 10)
-  );
-  console.log(putParcours);
   pool.query(
     'UPDATE parcours SET ? WHERE id = ?',
-    [putParcours, parcoursId],
+    [putParcours, putParcours.id],
     (error, results) => {
       if (error) {
         console.log(error);
@@ -61,22 +53,17 @@ router.put('/', (request, response) => {
     }
   );
 });
-// trouver avec id
-// router.get('/:id', function (request, response) {
-//   const { id } = request.params;
-//   pool.query(
-//     'SELECT * FROM documentation WHERE id = ?',
-//     [id],
-//     (error, results) => {
-//       if (error) {
-//         response.status(500).send(error);
-//       } else if (results.length > 0) {
-//         response.send(results[0]);
-//       } else {
-//         response.sendStatus(404);
-//       }
-//     }
-//   );
-// });
+
+router.delete('/:id', (request, response) => {
+  const { id } = request.params;
+  console.log(id);
+  pool.query('DELETE FROM parcours WHERE id = ?', [id], (error, results) => {
+    if (error) {
+      response.status(500).send(error);
+    } else {
+      response.send(results);
+    }
+  });
+});
 
 module.exports = router;
