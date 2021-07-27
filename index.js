@@ -8,8 +8,12 @@ app.use(express.json());
 
 const port = process.env.PORT || 8080;
 
-app.use(cors());
-
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
+app.use(express.static('public'));
 app.listen(port, (err) => {
   if (err) {
     console.error(err);

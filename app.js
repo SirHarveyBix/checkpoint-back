@@ -7,7 +7,12 @@ const login = require('./routes/login');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
+app.use(express.static('public'));
 // TODO: add your routes here
 app.use('/user', user);
 app.use('/parcours', parcours);
