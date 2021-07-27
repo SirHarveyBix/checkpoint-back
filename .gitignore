@@ -1,6 +1,7 @@
 node_modules
 .env
 package-lock.json
-
+public
+temp
 # vs code custom colors
 .vscode
